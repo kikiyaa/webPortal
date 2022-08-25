@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: paraviewweb
+spec:
+  type: NodePort
+  ports:
+    - protocol: TCP
+      name: paraviewweb
+      port: 80
+  selector:
+    app: paraviewweb

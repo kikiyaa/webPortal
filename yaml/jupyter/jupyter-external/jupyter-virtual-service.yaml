@@ -1,0 +1,15 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: jupyter
+spec:
+  hosts:
+    - $USER_ID.jupyter.app.ksc.re.kr
+  gateways:
+    - default/app-gateway
+  http:
+    - route:
+        - destination:
+            host: jupyter
+            port:
+              number: 8888

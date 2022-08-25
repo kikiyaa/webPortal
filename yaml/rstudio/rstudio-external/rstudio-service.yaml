@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: rstudio
+  name: rstudio
+spec:
+  ports:
+    - name: rstudio
+      port: 8787
+      targetPort: 8787
+  selector:
+    app: rstudio
+  type: NodePort

@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jupyter-$NAME
+  labels:
+    app: jupyter-$NAME
+spec:
+  selector:
+    matchLabels:
+      app: jupyter-$NAME
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: jupyter-$NAME
+    spec:
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
+      containers:
+        - image: $IMAGE_NAME
+          name: jupyter
+          ports:
+            - containerPort: 8888
+          env:
+            - name: NB_UID
+              value: "$USER_UID"
+            - name: NB_GID
+              value: "$USER_GID"
+            - name: NB_USER
+              value: "$USER_ID"
+            - name: HOME
+              value: "/home01/$USER_ID"
+          workingDir: /scratch/$USER_ID
+          volumeMounts:
+            - name: home-volume
+              mountPath: /home01/$USER_ID
+            - name: scratch-volume
+              mountPath: /scratch/$USER_ID
+      volumes:
+        - name: home-volume
+          hostPath:
+            path: /home01/$USER_ID
+            type: Directory
+        - name: scratch-volume
+          hostPath:
+            path: /scratch/$USER_ID
+            type: Directory

@@ -1,0 +1,40 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: paraviewweb
+  labels:
+    app: paraviewweb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: paraviewweb
+  template:
+    metadata:
+      labels:
+        app: paraviewweb
+    spec:
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
+      containers:
+        - name: paraviewweb
+          image: nvcr.io/nvidia-hpcvis/paraview:egl-py3-5.9.0
+          workingDir: /opt/paraview
+          command: [ "sh", "-c", "/bin/entrypoint.sh" ]
+          volumeMounts:
+            - name: configmap-volume
+              mountPath: /bin/entrypoint.sh
+              readOnly: true
+              subPath: entrypoint.sh
+            - name: data
+              mountPath: "/data"
+      volumes:
+        - name: configmap-volume
+          configMap:
+            defaultMode: 0700
+            name: paraviewweb-configmap
+        - name: data
+          hostPath:
+            path: /home01/$USER_ID
+            type: Directory

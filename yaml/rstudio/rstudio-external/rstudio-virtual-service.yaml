@@ -1,0 +1,24 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: rstudio
+spec:
+  hosts:
+    - $USER_ID.rstudio.app.ksc.re.kr
+  gateways:
+    - default/app-gateway
+  http:
+    - match:
+        - headers:
+            authorization:
+              exact: 'Basic $AUTH_KEY'
+      route:
+        - destination:
+            host: rstudio
+            port:
+              number: 8787
+    - route:
+        - destination:
+            host: my-nginx
+            port:
+              number: 80

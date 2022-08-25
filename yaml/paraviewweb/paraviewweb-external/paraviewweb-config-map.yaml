@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: paraviewweb-configmap
+data:
+  entrypoint.sh: |-
+    #!/bin/bash
+    /opt/paraview/bin/pvpython /opt/paraview/share/paraview-5.9/web/visualizer/server/pvw-visualizer.py --content /opt/paraview/share/paraview-5.9/web/visualizer/www/ --port 80 --data /data

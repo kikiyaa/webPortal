@@ -1,0 +1,15 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: filerun
+spec:
+  hosts:
+    - $USER_ID.filerun.app.ksc.re.kr
+  gateways:
+    - default/app-gateway
+  http:
+    - route:
+        - destination:
+            host: filerun
+            port:
+              number: 80
